@@ -13,6 +13,7 @@ function CardContent({ player, backgroundImageUrl }) {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center'
           }} 
+          loading='lazy'
           src={`https://img.uefa.com/imgml/TP/players/3/2024/cutoff/${player.id}.png`} 
           alt={player.internationalName} 
         />

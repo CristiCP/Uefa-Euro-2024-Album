@@ -6,6 +6,7 @@ import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import PackOpener from './Components/PackOpener';
 import LoginPage from './Components/Login/LoginPage';
+import AlbumPage from './Components/AlbumPage';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/packing" element={<PackOpener></PackOpener>}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
+        <Route path='/album' element={<AlbumPage></AlbumPage>}></Route>
       </Routes>
     </Router>
   )
