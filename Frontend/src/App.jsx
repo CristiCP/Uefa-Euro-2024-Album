@@ -1,12 +1,10 @@
 import React from 'react';
-import { useState } from 'react';
-import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './Components/Home';
+import HomePage from './Components/Home/HomePage';
 import Navbar from './Components/Navbar';
-import PackOpener from './Components/PackOpener';
+import StorePage from './Components/Store/StorePage';
 import LoginPage from './Components/Login/LoginPage';
-import AlbumPage from './Components/AlbumPage';
+import AlbumPage from './Components/Album/AlbumPage';
 
 function App() {
 
@@ -14,8 +12,8 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/packing" element={<PackOpener></PackOpener>}></Route>
+        <Route path="/" element={<HomePage/>} />
+        <Route path="/packing" element={<StorePage></StorePage>}></Route>
         <Route path='/login' element={<LoginPage></LoginPage>}></Route>
         <Route path='/album' element={<AlbumPage></AlbumPage>}></Route>
       </Routes>
