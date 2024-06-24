@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const fetchTeamsData = async () => {
   try {
-    const response = await axios.get(import.meta.env.VITE_TEAMS_API);
+    const response = await axios.get(import.meta.env.VITE_LIVESTANDINGS_API);
     const updatedData = response.data.map(group => ({
       ...group,
       teams: group.teams.sort((a, b) => {
