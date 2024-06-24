@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPlayersByTeam } from './albumService';
+import { fetchPlayersByTeam, fetchUserPlayers } from './albumService';
 import Card from '../Cards/Card';
 
 function TeamPage({ team, isVisible }) {
   const [players, setPlayers] = useState([]);
-  const [cardsEnabled, setCardsEnabled] = useState(false);
+  const [userPlayers,setUserPlayers] = useState([]);
 
   useEffect(() => {
     const getPlayers = async () => {
       try {
         const sortedPlayers = await fetchPlayersByTeam(team.teamId);
         setPlayers(sortedPlayers);
+        const token = sessionStorage.getItem('token');
+        const fetchedPlayers = await fetchUserPlayers(token);
+        setUserPlayers(fetchedPlayers);
       } catch (error) {
         console.error('Error fetching players:', error);
       }
@@ -21,6 +24,10 @@ function TeamPage({ team, isVisible }) {
     }
   }, [team.teamId, isVisible]);
 
+  const isUserPlayer = (playerId) => {
+    return userPlayers.some(player => player.player_id === playerId);
+  };
+
   const renderPlayersByPosition = (position) => {
     return (
       <ul className='flex justify-center flex-wrap mb-14'>
@@ -28,7 +35,7 @@ function TeamPage({ team, isVisible }) {
           .filter(player => player.fieldPosition === position)
           .map(player => (
             <li className='mt-4 mr-2 md:mr-10 mb-2' key={player.id}>
-              <Card player={player} cardsEnabled={cardsEnabled}></Card>
+              <Card player={player} cardsEnabled={isUserPlayer(player.id)}></Card>
             </li>
           ))}
       </ul>

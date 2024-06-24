@@ -2,7 +2,17 @@ import axios from 'axios';
 
 const openPack = async (selectedPack) => {
   try {
-    const response = await axios.post(import.meta.env.VITE_OPENPACKS_API, { selectedPack });
+    const token = sessionStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: token
+      },
+    };
+    const response = await axios.post(
+      import.meta.env.VITE_OPENPACKS_API,
+      { selectedPack },
+      config
+    );
     return response.data;
   } catch (error) {
     console.error('Error opening pack:', error);

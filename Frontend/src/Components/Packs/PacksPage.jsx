@@ -18,6 +18,11 @@ function PacksPage() {
     setSelectedPack(packName);
   };
 
+  const handleResetPlayers = () => {
+    setPlayers([]);
+    setConfirmOpening(false);
+  };
+
   return (
     <div>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center'>
@@ -38,6 +43,14 @@ function PacksPage() {
 
       {players.length > 0 && (
         <div className="w-full">
+          <div className='flex justify-center'>
+            <button
+              className='bg-gray-500 hover:bg-gray-700 text-white font-bold text-xl py-2 px-4 rounded-xl'
+              onClick={handleResetPlayers}
+            >
+              Submit
+            </button>
+          </div>
           <div className="flex flex-wrap justify-center">
             {players.map((player, index) => ( 
                 <div key={player.id} className='flex flex-col player-card animate-slide-from-left p-2 mr-3 ml-3 mt-3 mb-3 shadow-3xl hover:scale-105 hover:cursor-pointer' style={{

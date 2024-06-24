@@ -58,4 +58,18 @@ const sortPlayersByPosition = (players) => {
   });
 };
 
-export { fetchTeams, fetchPlayersByTeam, sortPlayersByPosition };
+const fetchUserPlayers = async (token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    };
+    const response = await axios.get(import.meta.env.VITE_USER_PLAYERS_API, config);
+    return response.data.players; 
+  } catch (error) {
+    throw new Error('Error fetching user players');
+  }
+};
+
+export { fetchTeams, fetchPlayersByTeam, sortPlayersByPosition, fetchUserPlayers };

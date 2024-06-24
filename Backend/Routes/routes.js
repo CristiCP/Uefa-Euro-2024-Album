@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const {getAllGroupsAndTeams} = require('../Controllers/teamsController')
-const { getAllPlayers } = require('../Controllers/playersController');
+const {getAllPlayers,getPlayersForUser} = require('../Controllers/playersController');
 const {getPlayersPack} = require('../Controllers/packsController');
 const {getLiveStandings} = require('../Controllers/liveStandingsControllers');
 const {register, login, validateToken, verifyAccount} = require('../Controllers/loginController');
@@ -19,9 +19,12 @@ router.get('/players', async function (req, res) {
   res.json(players);
 });
 
+router.get('/user/players', getPlayersForUser);
+
 router.post('/openPack',async function(req,res) {
   const selectedPack = req.body.selectedPack;
-  const players = await getPlayersPack(selectedPack);
+  const token = req.headers.authorization;
+  const players = await getPlayersPack(selectedPack,token);
   res.json(players);
 });
 

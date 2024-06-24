@@ -1,4 +1,26 @@
 const {getAllPlayers} = require('../Controllers/playersController');
+const { promisify } = require('util');
+const connection = require('../Database/databaseConnection');
+const jwt = require('jsonwebtoken');
+
+const query = promisify(connection.query).bind(connection);
+
+async function getUserIdByUsername(username) {
+  try {
+    const userQuery = 'SELECT id FROM users WHERE username = ?';
+    const [userRows] = await query(userQuery, [username]);
+    if (!userRows || userRows.length === 0) {
+      console.log('User not found');
+    }
+    const user = {
+      id: userRows.id,
+    };
+    userId = user.id;
+    return userId;
+  } catch (error) {
+    console.log('Error fetching the user:',error);
+  }
+}
 
 async function selectRandomPlayers(numberOfPlayers) {
     const players = await getAllPlayers();
@@ -14,19 +36,33 @@ async function selectRandomPlayers(numberOfPlayers) {
     return Array.from(selectedPlayers);
   }
 
-async function getPlayersPack(selectedPack) {
-  if(selectedPack === 'Common Pack') {
-    const players = await selectRandomPlayers(5);
-    return players;
+  async function getPlayersPack(selectedPack, token) {
+    try {
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const username = decoded.username;
+      const userId = await getUserIdByUsername(username);
+      let numberOfPlayers;
+      switch (selectedPack) {
+        case 'Common Pack':
+          numberOfPlayers = 5;
+          break;
+        case 'Rare Pack':
+          numberOfPlayers = 10;
+          break;
+        case 'Legendary Pack':
+          numberOfPlayers = 15;
+          break;
+        default:
+          console.log('Invalid pack type');
+      }
+      const players = await selectRandomPlayers(numberOfPlayers);
+      const insertQuery = 'INSERT INTO usercards (user_id, player_id) VALUES ?';
+      const values = players.map(player => [userId, player.id]);
+      await query(insertQuery, [values]);
+      return players;
+    } catch (error) {
+      console.error('Error opening pack:', error);
+    }
   }
-  else if(selectedPack === 'Rare Pack') {
-    const players = await selectRandomPlayers(10);
-    return players;
-  }
-  else if(selectedPack === 'Legendary Pack') {
-    const players = await selectRandomPlayers(15);
-    return players;
-  }
-}
 
 module.exports = { getPlayersPack};
