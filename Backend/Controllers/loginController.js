@@ -61,7 +61,7 @@ async function login(username, password) {
         const token = jwt.sign(
             { id: user.id, username: user.username, email: user.email },
             process.env.SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '1d' }
         );
         return { success: true, message: 'Login successful', token, user: { username: user.username, email: user.email } };
     } catch (error) {

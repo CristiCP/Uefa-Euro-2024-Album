@@ -7,6 +7,7 @@ import LoginPage from './Components/Login/LoginPage';
 import AlbumPage from './Components/Album/AlbumPage';
 import PrivateRoute from './Components/PrivateRoute';
 import ValidationPage from './Components/Login/ValidationPage';
+import TransferMarketPage from './Components/TransferMarket/TransferMarketPage';
 
 function App() {
   return (
@@ -23,6 +24,11 @@ function App() {
         <Route path="/album" element={
           <PrivateRoute>
             <AlbumPage />
+          </PrivateRoute>
+        } />
+        <Route path="/transfer" element={
+          <PrivateRoute>
+            <TransferMarketPage />
           </PrivateRoute>
         } />
         <Route path="/verify" element={<ValidationPage />} />

@@ -5,6 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { MdLocalGroceryStore } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
+import { FaExchangeAlt } from "react-icons/fa";
 import useUserStore from '../Components/ZustandStore/ZustandStore';
 
 
@@ -42,6 +43,16 @@ function Navbar() {
           >
             <BiSolidPhotoAlbum className='mr-2' />
             Album
+          </Link>
+        </div>
+        <div className="text-white text-lg font-bold">
+          <Link
+            to="/transfer"
+            className="flex justify-center items-center text-lg mb-2 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md hover:text-yellow-500"
+            style={{ textShadow: '0 0 10px black' }}
+          >
+            <FaExchangeAlt className='mr-2'/>
+            Transfers
           </Link>
         </div>
         <div className="text-white text-lg font-bold">
