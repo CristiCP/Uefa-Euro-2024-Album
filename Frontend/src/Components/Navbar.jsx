@@ -6,6 +6,7 @@ import { MdLocalGroceryStore } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { FaExchangeAlt } from "react-icons/fa";
+import { IoMailSharp } from "react-icons/io5";
 import useUserStore from '../Components/ZustandStore/ZustandStore';
 
 
@@ -71,12 +72,22 @@ function Navbar() {
           </Link>
         </div>
         <div className="text-white text-lg font-bold">
+          <Link
+            to="/offers"
+            className="flex justify-center items-center text-lg mb-2 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md hover:text-yellow-500"
+            style={{ textShadow: '0 0 10px black' }}
+          >
+            <IoMailSharp className='mr-2'/>
+            Offers
+          </Link>
+        </div>
+        <div className="text-white text-lg font-bold">
         {username ? (
             <div className="flex items-center">
               <span className="flex justify-center items-center text-lg mb-2 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md"
               style={{ textShadow: '0 0 10px black' }}>
                 <FaUser className='mr-2' />
-                {username}
+                {username.length > 10 ? username.substring(0, 10) + '...' : username}
               </span>
               <button
                 onClick={handleLogout}

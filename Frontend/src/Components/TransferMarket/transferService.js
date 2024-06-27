@@ -40,3 +40,17 @@ export const addToTransferMarket = async (token, playerId) => {
     throw error;
   }
 }
+
+export const fetchExchangeOffers = async (token) => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_EXCHANGE_API, {
+      headers: {
+        Authorization: token
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching exchange offers:', error);
+    throw new Error('Error fetching exchange offers');
+  }
+};

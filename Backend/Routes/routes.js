@@ -5,7 +5,7 @@ const {getAllPlayers,getPlayersForUser,getPlayersDetailsForUser} = require('../C
 const {getPlayersPack} = require('../Controllers/packsController');
 const {getLiveStandings} = require('../Controllers/liveStandingsControllers');
 const {register, login, validateToken, verifyAccount} = require('../Controllers/loginController');
-const {getAllTransfers, postTransfer} = require('../Controllers/transferMarketController');
+const {getAllTransfers, postTransfer, createExchangeOffer, getAllExchangeOffers, acceptOffer} = require('../Controllers/transferMarketController');
 
 const router = express.Router();
 router.use(bodyParser.json());
@@ -51,6 +51,32 @@ router.get('/transfers', async (req, res) => {
 
 router.post('/createTransfer', function (req, res) {
   postTransfer(req, res, io);});
+
+router.post('/createOffer', (req, res) => {
+    createExchangeOffer(req, res);
+  });
+
+router.get('/exchangeOffers', async (req, res) => {
+  const token = req.headers.authorization;
+  try {
+    const exchangeOffers = await getAllExchangeOffers(token);
+    res.json(exchangeOffers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('/acceptOffer', async (req, res) => {
+  const { token, offeredUsername, playerOfferingId, playerOfferedId, exchangeId } = req.body;
+
+  try {
+    const result = await acceptOffer(token, offeredUsername, playerOfferingId, playerOfferedId, exchangeId);
+    res.status(200).json({ success: true, message: 'Offer accepted successfully' });
+  } catch (error) {
+    console.error('Error accepting offer:', error.message);
+    res.status(500).json({ success: false, error: 'Failed to accept offer' });
+  }
+});
 
 router.post('/register', async (req, res) => {
   const { username, password, email } = req.body;

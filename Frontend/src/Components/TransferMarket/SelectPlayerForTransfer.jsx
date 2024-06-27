@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Card from '../Cards/Card';
-import { IoMdAddCircle } from "react-icons/io";
-import { fetchUserPlayers,addToTransferMarket } from './transferService';
+import { FaExchangeAlt } from "react-icons/fa";
+import { fetchUserPlayers } from './transferService';
 
-function AddToTransferMarket({ setShowAddToMarket }) {
+function SelectPlayerForTransfer({ setSelectPlayerForTransfer, userSelected, playerSelected, setUserSelected, setPlayerSelected }) {
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
@@ -14,7 +15,7 @@ function AddToTransferMarket({ setShowAddToMarket }) {
       const fetchedPlayers = await fetchUserPlayers(token, page);
       setPlayers(fetchedPlayers);
     } catch (error) {
-      setError();
+      setError('Error fetching players');
       setPlayers([]);
     }
   };
@@ -36,23 +37,35 @@ function AddToTransferMarket({ setShowAddToMarket }) {
   };
 
   const handleBack = () => {
-    setShowAddToMarket(false);
+    setSelectPlayerForTransfer(false);
   };
 
-  const handleAddToMarket = async (playerId) => {
+  const handleExchange = async (playerId) => {
+    const token = sessionStorage.getItem('token');
+    const data = {
+      token,
+      playerOfferingId: playerId,
+      playerOfferedId: playerSelected, 
+      offeredUsername: userSelected   
+    };
+
     try {
-      const token = sessionStorage.getItem('token');
-      await addToTransferMarket(token, playerId);
-      await fetchData();
+      const response = await axios.post(import.meta.env.VITE_CREATE_OFFER_API, data);
+      if (response.status === 201) {
+        setPlayerSelected('');
+        setUserSelected('');
+        setSelectPlayerForTransfer(false);
+      }
     } catch (error) {
-      console.error('Error adding player to transfer market:', error);
+      console.error('Error creating exchange offer:', error);
+      alert('Failed to create exchange offer');
     }
   };
 
   return (
     <div className='mt-24'>
       <h2 className='text-center text-4xl mb-6 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md' style={{ textShadow: '0 0 10px black' }}>
-        Duplicates
+        Select a player for exchange
       </h2>
       {error && <p>{error}</p>}
       <div className="container mx-auto">
@@ -61,10 +74,10 @@ function AddToTransferMarket({ setShowAddToMarket }) {
             <li key={index} className='flex justify-center'>
               <div className='flex flex-col items-center'>
                 <Card player={player} cardsEnabled={true} />
-                <button className='bg-green-400 px-4 py-2 mt-2 font-bold hover:bg-green-500 hover:scale-105 rounded-md' onClick={() => handleAddToMarket(player.id)}>
+                <button className='bg-green-400 px-4 py-2 mt-2 font-bold hover:bg-green-500 hover:scale-105 rounded-md' onClick={() => handleExchange(player.id)}>
                   <div className='flex items-center'>
-                    <IoMdAddCircle className='mr-2' />
-                    <p>Add to Transfer Market</p>
+                    <FaExchangeAlt className='mr-2' />
+                    <p>Exchange</p>
                   </div>
                 </button>
               </div>
@@ -73,7 +86,7 @@ function AddToTransferMarket({ setShowAddToMarket }) {
         </ul>
       </div>
       <div className='buttons-container'>
-        <button className='bg-yellow-400 px-4 py-2 font-bold hover:bg-yellow-500 hover:scale-105 rounded-md' onClick={handleBack}>Transfers</button>
+        <button className='bg-red-600 px-4 py-2 font-bold hover:bg-red-700 hover:scale-105 rounded-md' onClick={handleBack}>Close</button>
         <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handlePrevPage} disabled={page === 1}>Previous</button>
         <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handleNextPage} disabled={players.length < 20}>Next</button>
       </div>
@@ -81,4 +94,4 @@ function AddToTransferMarket({ setShowAddToMarket }) {
   );
 }
 
-export default AddToTransferMarket;
+export default SelectPlayerForTransfer;

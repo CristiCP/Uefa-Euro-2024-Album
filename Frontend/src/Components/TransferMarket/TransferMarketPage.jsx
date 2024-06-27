@@ -3,14 +3,20 @@ import { fetchTransfers } from './transferService';
 import Card from '../Cards/Card';
 import AddToTransferMarket from './AddToTransferMarket';
 import { IoMdAddCircle } from "react-icons/io";
+import { FaExchangeAlt } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import io from 'socket.io-client';
+import SelectPlayerForTransfer from './SelectPlayerForTransfer';
 
-const socket = io('http://127.0.0.1:8000');
+const socket = io(import.meta.env.VITE_SOCKET);
 
 function TransferMarketPage() {
   const [transfers, setTransfers] = useState([]);
   const [page, setPage] = useState(1);
   const [showAddToMarket, setShowAddToMarket] = useState(false); 
+  const [showSelectPlayerForTransfer, setSelectPlayerForTransfer] = useState(false);
+  const [userSelected,setUserSelected] = useState('');
+  const [playerSelected,setPlayerSelected] = useState('');
 
   useEffect(() => {
     const getTransfers = async () => {
@@ -37,7 +43,7 @@ function TransferMarketPage() {
       return () => {
         socket.off('newTransfer');
       };
-  })
+  }, [transfers])
 
   const handleNextPage = () => {
     if (transfers.length >= 10) {
@@ -55,9 +61,15 @@ function TransferMarketPage() {
     setShowAddToMarket(true); 
   };
 
+  const handleTransferButtonClick = (playerId, username) => () => {
+    setSelectPlayerForTransfer(true);
+    setPlayerSelected(playerId);
+    setUserSelected(username);
+  };
+
   return (
     <div className="flex flex-col justify-center bg-blue-700">
-      {!showAddToMarket &&<div>
+      {!showAddToMarket && !showSelectPlayerForTransfer &&<div>
         <h1 className="text-center text-6xl font-bold">
           <div className='flex flex-wrap justify-center'>
             <img src={import.meta.env.VITE_TOURNAMENT_IMAGE_API} alt='Uefa' className="w-58 h-36 mt-24 mb-20 mr-2"/>
@@ -65,11 +77,29 @@ function TransferMarketPage() {
         </h1>
         <div className="w-full">
           {transfers.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 p-4">
               <ul className='flex justify-center flex-wrap mb-14'>
                 {transfers.map(transfer => (
-                  <li className='mt-4 mr-2 md:mr-10 mb-2' key={transfer.transferId}>
+                  <li className='flex bg-blue-900 rounded-xl flex-row mt-4 mr-2 mb-2' key={transfer.transferId}>
                     <Card player={transfer.player} cardsEnabled={true}></Card>
+                    <div className='flex flex-col items-center justify-between'>
+                      <div className='flex items-center mt-2'>
+                        <FaUser className='text-white'/>
+                        <p 
+                          className="text-xl font-bold text-white bg-opacity-75 px-2 py-1 rounded-md" 
+                          style={{textShadow:'0 0 10px black',
+                          }}>{transfer.user.username}
+                        </p>
+                      </div>
+                      <div className='flex items-center mr-3 mb-3'>
+                        <button className='bg-green-400 px-4 py-2 font-bold hover:bg-green-600 hover:scale-105 rounded-lg' onClick={handleTransferButtonClick(transfer.player.id, transfer.user.username)}>
+                          <div className='flex items-center'>
+                            <FaExchangeAlt className='mr-2' />
+                            <p>Transfer</p>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -90,6 +120,13 @@ function TransferMarketPage() {
         </div>
       </div>}
       {showAddToMarket && <AddToTransferMarket setShowAddToMarket={setShowAddToMarket}/>}
+      {showSelectPlayerForTransfer && <SelectPlayerForTransfer 
+       setSelectPlayerForTransfer={setSelectPlayerForTransfer}
+       userSelected={userSelected}
+       playerSelected={playerSelected}
+       setUserSelected={setUserSelected}
+       setPlayerSelected={setPlayerSelected}
+       ></SelectPlayerForTransfer>}
     </div>
   );
 }

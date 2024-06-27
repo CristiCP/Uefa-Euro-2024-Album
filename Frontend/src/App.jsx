@@ -8,6 +8,7 @@ import AlbumPage from './Components/Album/AlbumPage';
 import PrivateRoute from './Components/PrivateRoute';
 import ValidationPage from './Components/Login/ValidationPage';
 import TransferMarketPage from './Components/TransferMarket/TransferMarketPage';
+import ExchangeOffers from './Components/TransferMarket/ExchangeOffers';
 
 function App() {
   return (
@@ -29,6 +30,12 @@ function App() {
         <Route path="/transfer" element={
           <PrivateRoute>
             <TransferMarketPage />
+          </PrivateRoute>
+        } />
+        <Route path="/verify" element={<ValidationPage />} />
+        <Route path="/offers" element={
+          <PrivateRoute>
+            <ExchangeOffers></ExchangeOffers>
           </PrivateRoute>
         } />
         <Route path="/verify" element={<ValidationPage />} />
