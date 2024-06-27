@@ -68,6 +68,7 @@ function SelectPlayerForTransfer({
       console.error('Error creating exchange offer:', error);
       alert('Failed to create exchange offer');
       setSelectPlayerForTransfer(false);
+      window.location.reload();
     }
   };
 
