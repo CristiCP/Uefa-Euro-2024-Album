@@ -3,7 +3,7 @@ const connection = require('../Database/databaseConnection');
 async function getAllGroupsAndTeams() {
     try {
       const groups = await new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM railway.groupsTournament';
+        const query = 'SELECT * FROM Groups';
         connection.query(query, (err, results) => {
           if (err) return reject(err);
           resolve(results);
@@ -12,7 +12,7 @@ async function getAllGroupsAndTeams() {
   
       const groupPromises = groups.map(group => {
         return new Promise((resolve, reject) => {
-          const query = 'SELECT * FROM railway.teams WHERE groupId = ?';
+          const query = 'SELECT * FROM Teams WHERE groupId = ?';
           connection.query(query, [group.id], (err, results) => {
             if (err) return reject(err);
             resolve({
