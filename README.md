@@ -58,7 +58,7 @@ To install the project, follow these steps:
    npm install / yarn install
    ```
 
-Note: Before proceeding, ensure you have configured the database and the e-mail sender in `Backend/.env`.
+Note: Before proceeding, ensure you have configured the database from the folder `Backend` and the e-mail sender in `Backend/.env`.
 
 ## Running the Project
 
