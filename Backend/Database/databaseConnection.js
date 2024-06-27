@@ -4,7 +4,8 @@ const connection = mysql.createConnection({
   host: process.env.host || 'localhost',
   user: process.env.user || 'root',
   password: process.env.password || '',
-  database: process.env.database || 'euro2024'
+  database: process.env.database || 'euro2024',
+  port: process.env.port || ''
 });
 
 connection.connect((err) => {
@@ -16,3 +17,5 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
+
+//mysql://root:tZBpwpKKZdRkyuYXHArTEgjoeLVRJKQd@roundhouse.proxy.rlwy.net:23256/railway
