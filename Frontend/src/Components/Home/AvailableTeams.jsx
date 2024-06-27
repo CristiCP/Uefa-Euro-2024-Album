@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchTeamsData } from '../Home/homeService';
 
 function AvailableTeams() {
@@ -37,7 +37,7 @@ function AvailableTeams() {
                     </tr>
                   </thead>
                   <tbody>
-                    {group.teams.map((team, idx) => (
+                    {group.teams.map((team) => (
                       <tr key={team.teamId} className="hover:bg-blue-200 hover:shadow-md rounded-xl transition cursor-pointer">
                         <td className="px-6 py-4 whitespace-nowrap flex items-center">
                           <img src={team.teamImage} alt={team.teamName} className="w-8 h-8 mr-2 rounded-full"/>

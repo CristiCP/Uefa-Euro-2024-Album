@@ -10,21 +10,13 @@ const register = async (username, email, password) => {
 };
 
 export const login = async (username, password) => {
-  try {
-    const response = await axios.post(import.meta.env.VITE_LOGIN_API, { username, password });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.post(import.meta.env.VITE_LOGIN_API, { username, password });
+  return response.data;
 };
 
 export const validateAccount = async (token) => {
-  try {
-    const response = await axios.get(`${import.meta.env.VITE_VALIDATE_API}?token=${token}`);
-    return response.data; 
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.get(`${import.meta.env.VITE_VALIDATE_API}?token=${token}`);
+  return response.data;
 };
 
-export default { register,login,validateAccount };
+export default { register, login, validateAccount };

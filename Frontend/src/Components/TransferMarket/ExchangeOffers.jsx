@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { FaExchangeAlt } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import { FaExchangeAlt, FaUser } from "react-icons/fa";
 import Card from '../Cards/Card';
-import axios from 'axios'; 
-import { fetchExchangeOffers } from './transferService'; 
+import axios from 'axios';
+import { fetchExchangeOffers } from './transferService';
 
 function ExchangeOffers() {
   const [exchangeOffers, setExchangeOffers] = useState([]);
 
+  const fetchOffers = async () => {
+    const token = sessionStorage.getItem('token');
+    try {
+      const offers = await fetchExchangeOffers(token);
+      setExchangeOffers(offers);
+    } catch (error) {
+      console.log('Error fetching exchange offers');
+    }
+  };
+
   useEffect(() => {
-    const fetchOffers = async () => {
-      const token = sessionStorage.getItem('token');
-      try {
-        const offers = await fetchExchangeOffers(token);
-        setExchangeOffers(offers);
-      } catch (error) {
-        console.log('Error fetching exchange offers');
-      }
-    };
     fetchOffers();
   }, []);
 
   const acceptOffer = async (token, offeredUsername, playerOfferingId, playerOfferedId, exchangeId) => {
     try {
-      const response = await axios.post(import.meta.env.VITE_ACCEPT_OFFER_API, {
+      await axios.post(import.meta.env.VITE_ACCEPT_OFFER_API, {
         token,
         offeredUsername,
         playerOfferingId,
         playerOfferedId,
         exchangeId
       });
-      setExchangeOffers(prevOffers => prevOffers.filter(offer => offer.exchangeId !== exchangeId));
-      
+      window.location.reload();
     } catch (error) {
       console.error('Error accepting offer:', error.message);
     }
@@ -43,7 +42,7 @@ function ExchangeOffers() {
         <div className='flex flex-wrap justify-center'>
           <img src={import.meta.env.VITE_TOURNAMENT_IMAGE_API} alt='Uefa' className="w-58 h-36 mt-24 mb-20 mr-2"/>
         </div>
-      </h1>  
+      </h1>
       <div>
         <div className="flex justify-center">
           <ul className='flex justify-center flex-wrap md:flex-col mb-14'>
@@ -63,11 +62,11 @@ function ExchangeOffers() {
                   <div className='flex items-center mr-3 mb-3'>
                     <button
                       onClick={() => acceptOffer(
-                        sessionStorage.getItem('token'), 
+                        sessionStorage.getItem('token'),
                         exchangeOffer.userOffering,
-                        exchangeOffer.playerOffering.id, 
-                        exchangeOffer.playerOffered.id, 
-                        exchangeOffer.exchangeId 
+                        exchangeOffer.playerOffering.id,
+                        exchangeOffer.playerOffered.id,
+                        exchangeOffer.exchangeId
                       )}
                       className='bg-green-400 px-4 py-2 font-bold hover:bg-green-600 hover:scale-105 rounded-lg'
                     >
@@ -87,7 +86,7 @@ function ExchangeOffers() {
               </li>
             ))}
           </ul>
-        </div>  
+        </div>
       </div>
     </div>
   );

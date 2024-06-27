@@ -1,4 +1,3 @@
-import React from 'react'
 import PacksPage from '../Packs/PacksPage'
 
 function StorePage() {

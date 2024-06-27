@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PackContent from './PackContent';
 import '../Packs//packs.css';
 import LoadingPack from './LoadingPack';
@@ -52,7 +52,7 @@ function PacksPage() {
             </button>
           </div>
           <div className="flex flex-wrap justify-center">
-            {players.map((player, index) => ( 
+            {players.map((player) => ( 
                 <div key={player.id} className='flex flex-col player-card animate-slide-from-left p-2 mr-3 ml-3 mt-3 mb-3 shadow-3xl hover:scale-105 hover:cursor-pointer' style={{
                   backgroundImage: `url(${getBackgroundImageUrl(player.countryName)})`,
                   backgroundRepeat: 'no-repeat',

@@ -1,4 +1,3 @@
-import React from 'react'
 import loadingSvg from '../../Images/loading.svg';
 
 function LoadingPack() {

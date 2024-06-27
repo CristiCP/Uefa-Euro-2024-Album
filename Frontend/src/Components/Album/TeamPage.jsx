@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { fetchPlayersByTeam, fetchUserPlayers } from './albumService';
 import Card from '../Cards/Card';
 
 function TeamPage({ team, isVisible }) {
   const [players, setPlayers] = useState([]);
-  const [userPlayers,setUserPlayers] = useState([]);
+  const [userPlayers, setUserPlayers] = useState([]);
 
   useEffect(() => {
     const getPlayers = async () => {
@@ -67,5 +68,10 @@ function TeamPage({ team, isVisible }) {
     </div>
   );
 }
+
+TeamPage.propTypes = {
+  team: PropTypes.any,
+  isVisible: PropTypes.bool.isRequired,
+};
 
 export default TeamPage;

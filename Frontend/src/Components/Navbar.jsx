@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BiSolidPhotoAlbum } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
@@ -51,6 +50,11 @@ function Navbar() {
             to="/transfer"
             className="flex justify-center items-center text-lg mb-2 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md hover:text-yellow-500"
             style={{ textShadow: '0 0 10px black' }}
+            onClick={() => {
+              if (location.pathname === '/transfer') {
+                window.location.reload();
+              }
+            }}
           >
             <FaExchangeAlt className='mr-2'/>
             Transfers
@@ -76,6 +80,11 @@ function Navbar() {
             to="/offers"
             className="flex justify-center items-center text-lg mb-2 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md hover:text-yellow-500"
             style={{ textShadow: '0 0 10px black' }}
+            onClick={() => {
+              if (location.pathname === '/offers') {
+                window.location.reload();
+              }
+            }}
           >
             <IoMailSharp className='mr-2'/>
             Offers

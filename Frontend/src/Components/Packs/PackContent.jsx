@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import CardContent from '../Cards/CardContent';
 
 function PackContent({ player }) {
@@ -6,8 +6,7 @@ function PackContent({ player }) {
 
   if (player.countryName === "Türkiye") {
     backgroundImageUrl = import.meta.env.VITE_TURKEY_IMAGE;
-  }
-  else if(player.countryName === "Czechia") {
+  } else if (player.countryName === "Czechia") {
     backgroundImageUrl = import.meta.env.VITE_CZECH_IMAGE;
   }
 
@@ -27,5 +26,13 @@ function PackContent({ player }) {
     </div>
   );
 }
+
+PackContent.propTypes = {
+  player: PropTypes.shape({
+    countryName: PropTypes.string.isRequired,
+    fieldPosition: PropTypes.string.isRequired,
+    internationalName: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default PackContent;

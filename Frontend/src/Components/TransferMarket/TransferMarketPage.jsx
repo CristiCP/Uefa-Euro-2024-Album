@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchTransfers } from './transferService';
 import Card from '../Cards/Card';
 import AddToTransferMarket from './AddToTransferMarket';
-import { IoMdAddCircle } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import io from 'socket.io-client';
@@ -80,9 +79,9 @@ function TransferMarketPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 p-4">
               <ul className='flex justify-center flex-wrap mb-14'>
                 {transfers.map(transfer => (
-                  <li className='flex bg-blue-900 rounded-xl flex-row mt-4 mr-2 mb-2' key={transfer.transferId}>
+                  <li className='flex flex-wrap bg-blue-900 rounded-xl flex-row mt-4 mr-2 mb-2' key={transfer.transferId}>
                     <Card player={transfer.player} cardsEnabled={true}></Card>
-                    <div className='flex flex-col items-center justify-between'>
+                    <div className='flex flex-col items-center justify-between ml-2 md:ml-0'>
                       <div className='flex items-center mt-2'>
                         <FaUser className='text-white'/>
                         <p 
@@ -91,7 +90,7 @@ function TransferMarketPage() {
                           }}>{transfer.user.username}
                         </p>
                       </div>
-                      <div className='flex items-center mr-3 mb-3'>
+                      <div className='flex items-center mb-3 md:mr-3'>
                         <button className='bg-green-400 px-4 py-2 font-bold hover:bg-green-600 hover:scale-105 rounded-lg' onClick={handleTransferButtonClick(transfer.player.id, transfer.user.username)}>
                           <div className='flex items-center'>
                             <FaExchangeAlt className='mr-2' />
@@ -110,10 +109,7 @@ function TransferMarketPage() {
         </div>
         <div className='buttons-container'>
           <button className='bg-green-400 px-4 py-2 font-bold hover:bg-green-500 hover:scale-105 rounded-md ml-2' onClick={handleAddButtonClick}>
-            <div className='flex justify-center items-center'>
-              <IoMdAddCircle />
-              <p>Add</p>
-            </div>
+            Add
           </button>
           <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handlePrevPage} disabled={page === 1}>Previous</button>
           <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handleNextPage} disabled={transfers.length < 10}>Next</button>

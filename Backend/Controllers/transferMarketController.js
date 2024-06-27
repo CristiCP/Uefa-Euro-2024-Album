@@ -356,6 +356,15 @@ const acceptOffer = async (token, offeredUsername, playerOfferingId, playerOffer
                 console.error('Error deleting exchange offers:', error.message);
                 return false; 
               }
+              const deleteExchangeOffersQuery = `
+              DELETE FROM exchanges 
+              WHERE userOfferingId = ? AND playerOfferingId = ?
+            `;
+              connection.query(deleteExchangeOffersQuery, [userOfferingId, playerOfferingId], async (error, _) => {
+              if (error) {
+                console.error('Error deleting exchange offers:', error.message);
+                return false; 
+              }});
               const deleteExchangeQuery = 'DELETE FROM exchanges WHERE id = ?';
               connection.query(deleteExchangeQuery, [exchangeId], async (error, _) => {
                 if (error) {

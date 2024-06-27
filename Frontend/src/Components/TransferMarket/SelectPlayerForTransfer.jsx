@@ -1,28 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import Card from '../Cards/Card';
 import { FaExchangeAlt } from "react-icons/fa";
 import { fetchUserPlayers } from './transferService';
 
-function SelectPlayerForTransfer({ setSelectPlayerForTransfer, userSelected, playerSelected, setUserSelected, setPlayerSelected }) {
+function SelectPlayerForTransfer({ 
+  setSelectPlayerForTransfer, 
+  userSelected, 
+  playerSelected, 
+  setUserSelected, 
+  setPlayerSelected 
+}) {
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const token = sessionStorage.getItem('token');
     try {
       const fetchedPlayers = await fetchUserPlayers(token, page);
       setPlayers(fetchedPlayers);
+      setError(null);
     } catch (error) {
       setError('Error fetching players');
       setPlayers([]);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [fetchData]);
 
   const handleNextPage = () => {
     if (players.length >= 20) {
@@ -59,6 +67,7 @@ function SelectPlayerForTransfer({ setSelectPlayerForTransfer, userSelected, pla
     } catch (error) {
       console.error('Error creating exchange offer:', error);
       alert('Failed to create exchange offer');
+      setSelectPlayerForTransfer(false);
     }
   };
 
@@ -67,7 +76,7 @@ function SelectPlayerForTransfer({ setSelectPlayerForTransfer, userSelected, pla
       <h2 className='text-center text-4xl mb-6 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md' style={{ textShadow: '0 0 10px black' }}>
         Select a player for exchange
       </h2>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="container mx-auto">
         <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-14'>
           {players.map((player, index) => (
@@ -93,5 +102,13 @@ function SelectPlayerForTransfer({ setSelectPlayerForTransfer, userSelected, pla
     </div>
   );
 }
+
+SelectPlayerForTransfer.propTypes = {
+  setSelectPlayerForTransfer: PropTypes.func.isRequired,
+  userSelected: PropTypes.string.isRequired,
+  playerSelected: PropTypes.number.isRequired,
+  setUserSelected: PropTypes.func.isRequired,
+  setPlayerSelected: PropTypes.func.isRequired,
+};
 
 export default SelectPlayerForTransfer;

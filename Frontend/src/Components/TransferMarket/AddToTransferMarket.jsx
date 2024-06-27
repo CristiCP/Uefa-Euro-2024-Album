@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Card from '../Cards/Card';
 import { IoMdAddCircle } from "react-icons/io";
-import { fetchUserPlayers,addToTransferMarket } from './transferService';
+import { fetchUserPlayers, addToTransferMarket } from './transferService';
 
 function AddToTransferMarket({ setShowAddToMarket }) {
   const [players, setPlayers] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const token = sessionStorage.getItem('token');
     try {
       const fetchedPlayers = await fetchUserPlayers(token, page);
       setPlayers(fetchedPlayers);
+      setError(null); 
     } catch (error) {
-      setError();
+      setError('Error fetching players');
       setPlayers([]);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [fetchData]);
 
   const handleNextPage = () => {
     if (players.length >= 20) {
@@ -54,7 +56,7 @@ function AddToTransferMarket({ setShowAddToMarket }) {
       <h2 className='text-center text-4xl mb-6 font-bold text-white bg-opacity-75 px-2 py-1 rounded-md' style={{ textShadow: '0 0 10px black' }}>
         Duplicates
       </h2>
-      {error && <p>{error}</p>}
+      {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="container mx-auto">
         <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-14'>
           {players.map((player, index) => (
@@ -72,13 +74,19 @@ function AddToTransferMarket({ setShowAddToMarket }) {
           ))}
         </ul>
       </div>
+      <div className='flex justify-between'>
       <div className='buttons-container'>
         <button className='bg-yellow-400 px-4 py-2 font-bold hover:bg-yellow-500 hover:scale-105 rounded-md' onClick={handleBack}>Transfers</button>
         <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handlePrevPage} disabled={page === 1}>Previous</button>
         <button className='bg-white px-4 py-2 font-bold hover:bg-blue-900 hover:scale-105 rounded-md' onClick={handleNextPage} disabled={players.length < 20}>Next</button>
       </div>
+      </div>
     </div>
   );
 }
+
+AddToTransferMarket.propTypes = {
+  setShowAddToMarket: PropTypes.func.isRequired,
+};
 
 export default AddToTransferMarket;

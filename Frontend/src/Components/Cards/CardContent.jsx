@@ -1,8 +1,9 @@
-import React from 'react';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { fetchPlayersData } from '../Cards/cardsService';
 
 function CardContent({ player, backgroundImageUrl }) {
+  // eslint-disable-next-line no-unused-vars
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
@@ -40,5 +41,14 @@ function CardContent({ player, backgroundImageUrl }) {
     </div>
   );
 }
+
+CardContent.propTypes = {
+  player: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    internationalName: PropTypes.string.isRequired,
+    countryCode: PropTypes.string.isRequired,
+  }).isRequired,
+  backgroundImageUrl: PropTypes.string.isRequired,
+};
 
 export default CardContent;

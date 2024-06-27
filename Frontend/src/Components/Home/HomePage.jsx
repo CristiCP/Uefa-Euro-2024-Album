@@ -1,4 +1,3 @@
-import React from 'react';
 import AvailableTeams from './AvailableTeams';
 
 function HomePage() {
