@@ -1,11 +1,11 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: process.env.host || 'localhost',
+  host: process.env.host || 'roundhouse.proxy.rlwy.net',
   user: process.env.user || 'root',
-  password: process.env.password || '',
-  database: process.env.database || 'euro2024',
-  port: process.env.PORTDB || ''
+  password: process.env.password || 'tZBpwpKKZdRkyuYXHArTEgjoeLVRJKQd',
+  database: process.env.database || 'railway',
+  port: process.env.PORTDB || '23256'
 });
 
 connection.connect((err) => {
