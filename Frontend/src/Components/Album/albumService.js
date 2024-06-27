@@ -3,6 +3,7 @@ import axios from 'axios';
 const fetchTeams = async () => {
   try {
     const response = await axios.get(import.meta.env.VITE_TEAMS_API);
+    console.log(response.data);
     const updatedData = response.data.map(group => ({
       ...group,
       teams: group.teams.sort((a, b) => {
