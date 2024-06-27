@@ -3,7 +3,7 @@ const connection = require('../Database/databaseConnection');
 async function getAllGroupsAndTeams() {
     try {
       const groups = await new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM GroupsTournament';
+        const query = 'SELECT * FROM railway.groupsTournament';
         connection.query(query, (err, results) => {
           if (err) return reject(err);
           resolve(results);
